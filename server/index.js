@@ -14,6 +14,9 @@ const app = express();
 initDb().catch(err => console.error("Database Init Failed:", err));
 app.use(cors());
 app.use(express.json());
+app.get("/", (req, res) => {
+  res.json({ message: "ScholarAI API Backend is running successfully!" });
+});
 
 app.use("/api/users", userRoutes);
 app.use("/api/scholarships", scholarshipRoutes);
