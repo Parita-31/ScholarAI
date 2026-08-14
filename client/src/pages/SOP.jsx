@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { API_URL } from "../config";
 
 export default function SOP({ user }) {
   const [scholarships, setScholarships] = useState([]);
@@ -13,7 +14,7 @@ export default function SOP({ user }) {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/scholarships")
+    fetch(`${API_URL}/api/scholarships`)
       .then(res => res.json())
       .then(data => {
         const list = Array.isArray(data) ? data : (data.rows || []);
@@ -30,7 +31,7 @@ export default function SOP({ user }) {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:5000/api/sop/generate", {
+      const res = await fetch(`${API_URL}/api/sop/generate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -1,3 +1,5 @@
+import { API_URL } from "../config";
+
 export default function Profile({ user }) {
   if (!user) return <div className="dashboard">Please log in.</div>;
 
@@ -36,8 +38,8 @@ export default function Profile({ user }) {
           </div>
 
           <div className="info-item">
-            <label className="criteria-title">CGPA / GRADE</label>
-            <div style={{ fontSize: "1.1rem", fontWeight: '600', marginTop: '4px' }}>{user.cgpa || "N/A"}</div>
+            <label className="criteria-title">GPA / GRADE</label>
+            <div style={{ fontSize: "1.1rem", fontWeight: '600', marginTop: '4px' }}>{user.gpa || "N/A"}</div>
           </div>
 
           <div className="info-item">
@@ -51,6 +53,34 @@ export default function Profile({ user }) {
           </div>
         </div>
 
+        <div style={{ marginTop: "40px", background: 'rgba(255,255,255,0.02)', padding: '24px', borderRadius: '16px', border: '1px solid var(--border)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <h4 style={{ color: "white", margin: 0 }}>Sync Global Data</h4>
+              <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: '4px' }}>Fetch latest scholarship updates instantly.</p>
+            </div>
+            <button
+              onClick={async () => {
+                const btn = document.getElementById('sync-btn');
+                btn.innerText = "Syncing...";
+                try {
+                  const res = await fetch(`${API_URL}/api/admin/sync-scholarships`);
+                  const data = await res.json();
+                  alert(`Successfully synced ${data.count} scholarships!`);
+                  window.location.reload();
+                } catch (e) {
+                  alert("Sync failed. Check if server is running.");
+                } finally {
+                  btn.innerText = "Sync Now";
+                }
+              }}
+              id="sync-btn"
+              className="btn-secondary"
+            >
+              Sync Now
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -118,35 +118,6 @@ function Home() {
                 </div>
             </section>
 
-            {/* Testimonials */}
-            <section className="testimonials">
-                <div className="section-header">
-                    <h2 className="text-gradient">Success Stories</h2>
-                    <p>Hear from students who achieved their dreams with us.</p>
-                </div>
-                <div className="testimonials-grid">
-                    <div className="testimonial-card glass">
-                        <p>"ScholarAI matched me with a full-ride scholarship in Germany that I never would have found on my own."</p>
-                        <div className="user-profile">
-                            <div className="avatar">JD</div>
-                            <div>
-                                <h4>James Doe</h4>
-                                <span>Master's Student, Berlin</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="testimonial-card glass">
-                        <p>"The SOP generator is a life-saver! It helped me draft three distinct essays in under 10 minutes."</p>
-                        <div className="user-profile">
-                            <div className="avatar">SC</div>
-                            <div>
-                                <h4>Sarah Chen</h4>
-                                <span>PhD Candidate, Stanford</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             {/* FAQ Section */}
             <section className="faq-section">
@@ -165,14 +136,6 @@ function Home() {
                 </div>
             </section>
 
-            {/* Final CTA */}
-            <section className="final-cta">
-                <div className="cta-box glass">
-                    <h2>Ready to Start Your Journey?</h2>
-                    <p>Join thousands of students who are already using ScholarAI to find their future.</p>
-                    <Link to="/register" className="btn-primary">Create Your Account Today</Link>
-                </div>
-            </section>
         </div>
     );
 }

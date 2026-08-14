@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { API_URL } from "../config";
 
 export default function Applications({ user }) {
   const [apps, setApps] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/applications/${user.id}`)
+    fetch(`${API_URL}/api/applications/${user.id}`)
       .then(res => res.json())
       .then(setApps);
   }, [user]);

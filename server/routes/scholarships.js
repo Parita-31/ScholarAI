@@ -37,16 +37,6 @@ router.post("/recommend", async (req, res) => {
   }
 });
 
-router.post("/all-scored", async (req, res) => {
-  try {
-    const matches = await getMatchesForUser(req.body, false); // false = don't filter eligibility
-    res.json(matches);
-  } catch (err) {
-    console.error("All-Scored Error:", err.message);
-    res.status(500).json({ error: "Scoring failed" });
-  }
-});
-
 router.post("/notify", async (req, res) => {
   const { user, scholarship } = req.body;
 

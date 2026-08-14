@@ -6,7 +6,7 @@ const router = express.Router();
 
 /* REGISTER */
 router.post("/register", async (req, res) => {
-  let { name, email, password, income, category, course, state, education_level, cgpa, gpa } = req.body;
+  let { name, email, password, income, category, course, state, education_level, gpa } = req.body;
 
   // Trim inputs
   name = name?.trim();
@@ -22,10 +22,10 @@ router.post("/register", async (req, res) => {
   }
 
   try {
-    const userResult = await pool.query(
-      `INSERT INTO users (name, email, password, income, category, course, state, education_level, cgpa)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-       RETURNING *`,
+    // Insert without RETURNING for SQLite compatibility
+    await pool.query(
+      `INSERT INTO users (name, email, password, income, category, course, state, education_level, gpa)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
       [
         name,
         email,
@@ -35,10 +35,12 @@ router.post("/register", async (req, res) => {
         course,
         state || '',
         education_level || 'Undergraduate',
-        (cgpa || gpa) ? Number(cgpa || gpa) : 0
+        gpa ? Number(gpa) : 0
       ]
     );
 
+    // Fetch the newly created user
+    const userResult = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
     const newUser = userResult.rows[0];
 
     // Trigger immediate match check and notification

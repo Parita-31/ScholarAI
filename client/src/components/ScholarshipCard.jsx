@@ -34,6 +34,11 @@ export default function ScholarshipCard({ s, user }) {
     <div className="card glass">
       <h3>{s.name}</h3>
 
+      {s.matchscore && (
+        <p style={{ color: "#34d399", fontWeight: "bold", marginBottom: '12px' }}>
+          Match Score: {s.matchscore}%
+        </p>
+      )}
 
       <div className="scholarship-details">
         {/* Deadline section */}
@@ -72,6 +77,13 @@ export default function ScholarshipCard({ s, user }) {
         </div>
       </div>
 
+      {
+        s.ai_reason && (
+          <div className="ai-box" style={{ marginBottom: '16px' }}>
+            🤖 {s.ai_reason}
+          </div>
+        )
+      }
 
       <button onClick={handleApplyClick} className="btn-primary" style={{ width: '100%', marginTop: 'auto' }}>
         Apply Now

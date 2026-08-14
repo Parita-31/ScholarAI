@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ScholarshipCard from "../components/ScholarshipCard";
+import { API_URL } from "../config";
 
 export default function Matches({ user }) {
     const [scholarships, setScholarships] = useState([]);
@@ -8,7 +9,7 @@ export default function Matches({ user }) {
     useEffect(() => {
         if (!user) return;
 
-        fetch("http://localhost:5000/api/scholarships/recommend", {
+        fetch(`${API_URL}/api/scholarships/recommend`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

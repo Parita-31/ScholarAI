@@ -1,5 +1,6 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { API_URL } from "../config";
 
 export default function ScholarshipDetail({ user }) {
     const { id } = useParams();
@@ -10,7 +11,7 @@ export default function ScholarshipDetail({ user }) {
     useEffect(() => {
         if (!scholarship) {
             // If no state passed, fetch from API
-            fetch(`http://localhost:5000/api/scholarships/${id}`)
+            fetch(`${API_URL}/api/scholarships/${id}`)
                 .then(res => res.json())
                 .then(data => setScholarship(data))
                 .catch(err => console.error(err));
@@ -24,7 +25,7 @@ export default function ScholarshipDetail({ user }) {
         }
 
         try {
-            const res = await fetch("http://localhost:5000/api/scholarships/notify", {
+            const res = await fetch(`${API_URL}/api/scholarships/notify`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

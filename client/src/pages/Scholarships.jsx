@@ -1,45 +1,22 @@
 import { useEffect, useState } from "react";
 import ScholarshipCard from "../components/ScholarshipCard";
+import { API_URL } from "../config";
 
 export default function Scholarships({ user }) {
   const [scholarships, setScholarships] = useState([]);
 
   useEffect(() => {
-    const fetchScholarships = async () => {
-      try {
-        let res;
-        if (user) {
-          // Fetch ALL scholarships but with AI SCORES for logged in user
-          res = await fetch("http://localhost:5000/api/scholarships/all-scored", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id: user.id,
-              email: user.email,
-              name: user.name,
-              income: user.income,
-              category: user.category,
-              course: user.course,
-              education_level: user.education_level,
-              gpa: user.gpa
-            })
-          });
-        } else {
-          // Guest mode: fetch standard list
-          res = await fetch("http://localhost:5000/api/scholarships");
-        }
-
-        const data = await res.json();
+    // Fetch ALL scholarships instead of recommended
+    fetch(`${API_URL}/api/scholarships`)
+      .then(res => res.json())
+      .then(data => {
+        // Handle array response or object with rows
         if (Array.isArray(data)) setScholarships(data);
         else if (data.rows) setScholarships(data.rows);
         else setScholarships([]);
-      } catch (err) {
-        console.error("Fetch Error:", err);
-      }
-    };
-
-    fetchScholarships();
-  }, [user]);
+      })
+      .catch(err => console.error(err));
+  }, []);
 
   return (
     <div className="dashboard animate-fade-in">

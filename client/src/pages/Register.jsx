@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { API_URL } from "../config";
 
 export default function Register({ setUser }) {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export default function Register({ setUser }) {
     category: "General",
     course: "", // Major
     education_level: "Undergraduate",
-    cgpa: "",
+    gpa: "",
     state: ""
   });
   const [loading, setLoading] = useState(false);
@@ -30,11 +31,11 @@ export default function Register({ setUser }) {
     const payload = {
       ...form,
       income: Number(form.income),
-      cgpa: Number(form.cgpa)
+      gpa: Number(form.gpa)
     };
 
     try {
-      const res = await fetch("http://localhost:5000/api/users/register", {
+      const res = await fetch(`${API_URL}/api/users/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
@@ -120,8 +121,8 @@ export default function Register({ setUser }) {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
                 <div style={{ textAlign: 'left' }}>
-                  <label className="criteria-title">CGPA / SCORE</label>
-                  <input name="cgpa" placeholder="e.g. 8.5" type="number" step="0.01" onChange={handleChange} value={form.cgpa} style={{ marginTop: '8px' }} />
+                  <label className="criteria-title">GPA / SCORE</label>
+                  <input name="gpa" placeholder="e.g. 3.8" type="number" onChange={handleChange} value={form.gpa} style={{ marginTop: '8px' }} />
                 </div>
                 <div style={{ textAlign: 'left' }}>
                   <label className="criteria-title">CATEGORY</label>
