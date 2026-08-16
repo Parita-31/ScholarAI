@@ -83,6 +83,6 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     # Use 127.0.0.1 for Windows stability
-    server = HTTPServer(("127.0.0.1", 8001), Handler)
-    print("🚀 ML Service listening on http://127.0.0.1:8001")
+    port = int(os.environ.get("PORT", 8001))
+    server = HTTPServer(("0.0.0.0", port), Handler)
     server.serve_forever()
