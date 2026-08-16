@@ -27,7 +27,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def log_message(self, format, *args):
         # Prevent default logging to keep terminal clean, but we will print manually
-        print(f"REQUEST: {args[0]} {args[1]} -> {args[2]}")
+        print("REQUEST:", format % args)
 
     def do_GET(self):
         if self.path == "/health":
