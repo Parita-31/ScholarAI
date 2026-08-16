@@ -31,7 +31,7 @@ router.post("/register", async (req, res) => {
       [
         name,
         email,
-        hashedpassword,
+        hashedPassword,
         income ? Number(income) : 0,
         category || 'General',
         course,
