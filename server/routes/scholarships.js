@@ -51,7 +51,7 @@ router.post("/notify", async (req, res) => {
     if (result.success) {
       // Track it
       await pool.query(
-        "INSERT OR IGNORE INTO user_notifications (user_id, scholarship_id) VALUES ($1,$2)",
+        "INSERT INTO user_notifications (user_id, scholarship_id) VALUES ($1,$2) ON CONFLICT DO NOTHING",
         [user.id, scholarship.id]
       );
       res.json({ message: "Notification sent successfully", previewUrl: result.previewUrl });

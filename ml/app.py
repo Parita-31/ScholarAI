@@ -27,7 +27,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def log_message(self, format, *args):
         # Prevent default logging to keep terminal clean, but we will print manually
-        print(f"REQUEST: {args[0]} {args[1]} -> {args[2]}")
+        print("REQUEST:", format % args)
 
     def do_GET(self):
         if self.path == "/health":
@@ -35,6 +35,12 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header("Content-Type", "application/json")
             self.end_headers()
             self.wfile.write(json.dumps({"status": "active"}).encode())
+            return
+
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.end_headers()
+        self.wfile.write(json.dumps({"message": "ScholarAI ML Service is running"}).encode())
 
     def do_POST(self):
         print(f"--- Incoming POST: {self.path} ---")
@@ -83,6 +89,6 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     # Use 127.0.0.1 for Windows stability
-    server = HTTPServer(("127.0.0.1", 8001), Handler)
-    print("🚀 ML Service listening on http://127.0.0.1:8001")
+    port = int(os.environ.get("PORT", 8001))
+    server = HTTPServer(("0.0.0.0", port), Handler)
     server.serve_forever()

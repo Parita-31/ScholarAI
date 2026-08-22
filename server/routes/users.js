@@ -1,5 +1,6 @@
 import express from "express";
 import { pool } from "../db.js";
+import bcrypt from "bcrypt";
 import { getMatchesForUser, triggerMatchNotifications } from "../services/matchingService.js";
 
 const router = express.Router();
@@ -23,13 +24,14 @@ router.post("/register", async (req, res) => {
 
   try {
     // Insert without RETURNING for SQLite compatibility
+    const hashedPassword = await bcrypt.hash(password, 10);
     await pool.query(
       `INSERT INTO users (name, email, password, income, category, course, state, education_level, gpa)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
       [
         name,
         email,
-        password,
+        hashedPassword,
         income ? Number(income) : 0,
         category || 'General',
         course,
@@ -81,18 +83,28 @@ router.post("/login", async (req, res) => {
   console.log(`Login attempt for: ${email}`);
 
   try {
-    const user = await pool.query(
-      "SELECT * FROM users WHERE LOWER(email) = LOWER($1) AND password = $2",
-      [email, password]
+    const userResult = await pool.query(
+      "SELECT * FROM users WHERE LOWER(email) = LOWER($1)",
+      [email]
     );
 
-    if (user.rows.length === 0) {
-      console.log(`Login failed for: ${email} - No user found or password mismatch`);
+    if (userResult.rows.length === 0) {
+      console.log(`Login failed for: ${email} - User not found`);
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    const user = userResult.rows[0];
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      console.log(`Login failed for: ${email} - Invalid password`);
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
     console.log(`Login successful for: ${email}`);
-    res.json(user.rows[0]);
+
+    res.json(user);
   } catch (err) {
     console.error("Login Error:", err.message);
     res.status(500).json({ message: "Internal Server Error" });

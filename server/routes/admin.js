@@ -1,6 +1,7 @@
 import express from "express";
 import { scrapeScholarships } from "../scraper/scholarshipsScraper.js";
 import { saveScholarshipsToDB } from "../scraper/saveToDB.js";
+import { pool } from "../db.js";
 
 const router = express.Router();
 
